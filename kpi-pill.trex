@@ -4,7 +4,7 @@
     <default-locale>en_US</default-locale>
     <name resource-id="name"/>
     <description>Dynamic KPI Pill with rounded corners and conditional colors.</description>
-    <author name="Developer" email="dev@example.com" organization="Analytics" website="https://www.example.com"/>
+    <author name="Ilyas Coban" email="ilyas.cbn@gmail.com" organization="Ilyas Coban Consultancy" website="https://www.example.com"/>
     <min-api-version>1.0</min-api-version>
     <source-location>
       <!-- CHANGE THIS URL TO WHERE YOUR HTML FILE IS HOSTED -->
