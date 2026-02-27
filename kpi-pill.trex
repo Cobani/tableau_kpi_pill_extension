@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <worksheet-extension id="com.extensions.kpipill" extension-version="0.1.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Dynamic KPI Pill with rounded corners and conditional colors.</description>
+    <author name="Developer" email="dev@example.com" organization="Analytics" website="https://www.example.com"/>
+    <min-api-version>1.0</min-api-version>
+    <source-location>
+      <!-- CHANGE THIS URL TO WHERE YOUR HTML FILE IS HOSTED -->
+      <url>https://cobani.github.io/tableau_kpi_pill_extension</url>
+    </source-location>
+    <icon></icon>
+    <permissions>
+      <permission>full data</permission>
+    </permissions>
+  </worksheet-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">KPI Pill Badge</text>
+    </resource>
+  </resources>
+</manifest>
