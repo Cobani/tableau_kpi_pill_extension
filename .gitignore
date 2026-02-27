@@ -1,0 +1,22 @@
+# Python 
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+build/
+dist/
+
+# SQL / Database
+*.sql.log
+*.sqlite
+.env
+.pgpass
+
+# IDE - VS Code
+.vscode/
+.history/
+
+# macOS System Files
+.DS_Store
