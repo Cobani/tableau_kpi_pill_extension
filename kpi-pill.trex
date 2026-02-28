@@ -7,24 +7,25 @@
     <author name="Ilyas Coban" email="ilyas.cbn@gmail.com" organization="Ilyas Coban Consultancy" website="https://www.example.com"/>
     <min-api-version>1.0</min-api-version>
     <source-location>
-      <!-- CHANGE THIS URL TO WHERE YOUR HTML FILE IS HOSTED -->
       <url>https://cobani.github.io/tableau_kpi_pill_extension</url>
     </source-location>
     <icon></icon>
     <permissions>
       <permission>full data</permission>
     </permissions>
+    <context-menu>
+      <configure-context-menu-item />
+    </context-menu>
     <encoding id="kpi-value">
-      <displayName>KPI Value</displayName>
+      <display-name>KPI Value</display-name>
       <data-spec>
         <data-type>numeric</data-type>
       </data-spec>
-      <role>measure</role>
-      <fields max="1" />
+      <role-spec>
+        <role-type>continuous-measure</role-type>
+      </role-spec>
+      <fields max-count="1" />
     </encoding>
-    <context-menu>
-      <configure />
-    </context-menu>
   </worksheet-extension>
   <resources>
     <resource id="name">
