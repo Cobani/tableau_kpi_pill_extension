@@ -2,357 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau KPI Pill Extension</title>
-    
-    <!-- Load Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Load Tableau Extensions API -->
-    <script src="https://cdn.jsdelivr.net/npm/@tableau/extensions-api-master/lib/tableau.extensions.1.latest.js"></script>
-
-    <!-- Configure specific colors from the user mockup -->
-    <script>
-        tailwind.config = {
-            corePlugins: {
-                preflight: false,
-            },
-            theme: {
-                extend: {
-                    colors: {
-                        'pill-green-bg': '#EAF5EE',
-                        'pill-green-text': '#52A569',
-                        'pill-red-bg': '#F8EBEA',
-                        'pill-red-text': '#CB5753',
-                        'pill-blue-bg': '#EEF0FA',
-                        'pill-blue-text': '#6A71D0',
-                    },
-                    fontFamily: {
-                        sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <title>Transparent Test</title>
     <style>
-        /* Force total transparency on all root and container elements */
-        html, body {
+        /* Force total transparency on everything using the universal selector */
+        * {
             background-color: transparent !important;
             background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
             width: 100%;
+            height: 100%;
             overflow: hidden;
-            -webkit-print-color-adjust: exact;
-        }
-
-        #app, #demo-view, #main-view {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: rgba(0,0,0,0) !important;
-            background: transparent !important;
-        }
-
-        /* Ensure Tailwind classes don't accidentally bring in a background */
-        .hidden { display: none !important; }
-        .flex { display: flex !important; }
-        .flex-col { flex-direction: column !important; }
-        .gap-6 { gap: 1.5rem !important; }
-        .items-center { align-items: center !important; }
-        .justify-center { justify-content: center !important; }
-        .w-full { width: 100% !important; }
-        .h-full { height: 100% !important; }
-        .p-4 { padding: 1rem !important; }
-        .text-gray-400 { color: #9ca3af !important; }
-        .mt-4 { margin-top: 1rem !important; }
-        .absolute { position: absolute !important; }
-        .bottom-4 { bottom: 1rem !important; }
-        .text-center { text-align: center !important; }
-        .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
-        .text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
-
-        /* The core pill styles matching the mockup */
-        .kpi-pill {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 32px;
-            border-radius: 9999px; /* Fully rounded */
-            font-weight: 800; /* Extra bold */
-            font-size: clamp(1.5rem, 8vw, 3rem); /* Responsive sizing */
-            white-space: nowrap;
-            letter-spacing: 0.02em;
-            transition: all 0.3s ease;
-        }
-
-        /* Settings pane animations */
-        #settings-pane {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            padding: 16px;
-            background: white;
-            box-sizing: border-box;
-        }
-
-        #settings-pane.active {
-            display: flex;
-        }
-
-        #main-view {
-            display: none;
-            width: 100%;
-            height: 100%;
-            align-items: center;
-            justify-content: center;
-            position: relative;
             background-color: transparent !important;
+            background: none !important;
         }
 
-        #main-view.active {
-            display: flex;
+        .test-text {
+            color: #52A569;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-
-    <div id="app">
-        <!-- LOADING VIEW -->
-        <div id="loading" class="text-gray-400 font-semibold animate-pulse">Initializing...</div>
-
-        <!-- DEMO VIEW (Shows if loaded outside Tableau) -->
-        <div id="demo-view" class="hidden flex-col gap-6 items-center justify-center w-full h-full p-4">
-            <div class="kpi-pill bg-pill-green-bg text-pill-green-text">+9.2%</div>
-            <div class="kpi-pill bg-pill-red-bg text-pill-red-text">-3.5%</div>
-            <div class="kpi-pill bg-pill-blue-bg text-pill-blue-text">+1.1%</div>
-            <p class="text-xs text-gray-400 mt-4 absolute bottom-4 text-center px-4">
-                Running in Browser Demo Mode.<br>Load in Tableau to connect data.
-            </p>
-        </div>
-
-        <!-- MAIN PILL VIEW (Runs inside Tableau) -->
-        <div id="main-view" class="group">
-            <div id="pill-container" class="kpi-pill bg-pill-blue-bg text-pill-blue-text">
-                --
-            </div>
-            <!-- Gear Icon to open settings, appears on hover -->
-            <button onclick="openSettings()" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-gray-100 hover:bg-gray-200 text-gray-600 p-2 rounded shadow transition duration-200" title="Configure Extension">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            </button>
-        </div>
-
-        <!-- SETTINGS VIEW -->
-        <div id="settings-pane">
-            <h2 class="font-bold text-lg text-gray-800 mb-4 border-b pb-2">KPI Settings</h2>
-            
-            <label class="text-sm font-semibold text-gray-600 mb-1">Source Worksheet</label>
-            <select id="ws-select" class="border border-gray-300 rounded p-2 mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">-- Select Worksheet --</option>
-            </select>
-
-            <label class="text-sm font-semibold text-gray-600 mb-1">Value Field</label>
-            <select id="field-select" class="border border-gray-300 rounded p-2 mb-6 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" disabled>
-                <option value="">-- Select Worksheet First --</option>
-            </select>
-
-            <div class="mt-auto flex gap-2">
-                <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-700 text-white w-full rounded py-2 font-bold transition shadow-sm">Save & Apply</button>
-                <button onclick="cancelSettings()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 w-full rounded py-2 font-bold transition shadow-sm hidden" id="cancel-btn">Cancel</button>
-            </div>
-        </div>
+    <div class="test-text">
+        Transparent Test
     </div>
-
-    <script>
-        let unregisterEvent = null;
-
-        // Initialize App
-        document.addEventListener("DOMContentLoaded", () => {
-            if (typeof tableau === 'undefined' || !tableau.extensions) {
-                showDemo();
-                return;
-            }
-
-            tableau.extensions.initializeAsync().then(() => {
-                document.getElementById('loading').style.display = 'none';
-                
-                // Check if already configured
-                const wsName = tableau.extensions.settings.get('worksheet');
-                const fieldName = tableau.extensions.settings.get('field');
-
-                if (wsName && fieldName) {
-                    renderPill();
-                } else {
-                    openSettings();
-                }
-            }).catch((err) => {
-                // If initialization fails (e.g. running outside Tableau)
-                console.log("Not running inside Tableau. Launching Demo Mode.");
-                showDemo();
-            });
-        });
-
-        // --- View Toggles ---
-        function showDemo() {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('settings-pane').classList.remove('active');
-            document.getElementById('main-view').classList.remove('active');
-            document.getElementById('demo-view').style.display = 'flex';
-        }
-
-        function openSettings() {
-            document.getElementById('main-view').classList.remove('active');
-            document.getElementById('settings-pane').classList.add('active');
-            
-            const configured = tableau.extensions.settings.get('worksheet');
-            if (configured) {
-                document.getElementById('cancel-btn').classList.remove('hidden');
-            }
-            populateWorksheets();
-        }
-
-        function cancelSettings() {
-            document.getElementById('settings-pane').classList.remove('active');
-            document.getElementById('main-view').classList.add('active');
-        }
-
-        // --- Tableau Logic ---
-        function populateWorksheets() {
-            const dashboard = tableau.extensions.dashboardContent.dashboard;
-            const wsSelect = document.getElementById('ws-select');
-            const fieldSelect = document.getElementById('field-select');
-            
-            // Clear current
-            wsSelect.innerHTML = '<option value="">-- Select Worksheet --</option>';
-            
-            dashboard.worksheets.forEach(ws => {
-                const opt = document.createElement('option');
-                opt.value = ws.name;
-                opt.text = ws.name;
-                wsSelect.appendChild(opt);
-            });
-
-            // Set current value if it exists
-            const savedWs = tableau.extensions.settings.get('worksheet');
-            if (savedWs) {
-                wsSelect.value = savedWs;
-                loadFields(savedWs);
-            }
-
-            wsSelect.onchange = (e) => loadFields(e.target.value);
-        }
-
-        async function loadFields(wsName) {
-            const fieldSelect = document.getElementById('field-select');
-            if (!wsName) {
-                fieldSelect.disabled = true;
-                fieldSelect.innerHTML = '<option value="">-- Select Worksheet First --</option>';
-                return;
-            }
-
-            const dashboard = tableau.extensions.dashboardContent.dashboard;
-            const worksheet = dashboard.worksheets.find(w => w.name === wsName);
-            
-            if (worksheet) {
-                // Get one row of data to inspect columns
-                const dataTable = await worksheet.getSummaryDataAsync({ maxRows: 1 });
-                fieldSelect.innerHTML = '<option value="">-- Select Field --</option>';
-                fieldSelect.disabled = false;
-
-                dataTable.columns.forEach(col => {
-                    const opt = document.createElement('option');
-                    opt.value = col.fieldName;
-                    opt.text = col.fieldName;
-                    fieldSelect.appendChild(opt);
-                });
-
-                const savedField = tableau.extensions.settings.get('field');
-                if (savedField) {
-                    fieldSelect.value = savedField;
-                }
-            }
-        }
-
-        async function saveSettings() {
-            const wsSelect = document.getElementById('ws-select').value;
-            const fieldSelect = document.getElementById('field-select').value;
-
-            if (wsSelect && fieldSelect) {
-                tableau.extensions.settings.set('worksheet', wsSelect);
-                tableau.extensions.settings.set('field', fieldSelect);
-                await tableau.extensions.settings.saveAsync();
-                
-                document.getElementById('settings-pane').classList.remove('active');
-                renderPill();
-            } else {
-                alert("Please select both a worksheet and a field.");
-            }
-        }
-
-        async function renderPill() {
-            const wsName = tableau.extensions.settings.get('worksheet');
-            const fieldName = tableau.extensions.settings.get('field');
-
-            if (!wsName || !fieldName) return;
-
-            document.getElementById('main-view').classList.add('active');
-            const pillContainer = document.getElementById('pill-container');
-
-            const dashboard = tableau.extensions.dashboardContent.dashboard;
-            const worksheet = dashboard.worksheets.find(w => w.name === wsName);
-
-            if (!worksheet) return;
-
-            // Manage event listeners for live updates
-            if (unregisterEvent) {
-                unregisterEvent();
-            }
-            // Re-render when dashboard is filtered
-            unregisterEvent = worksheet.addEventListener(tableau.TableauEventType.FilterChanged, renderPill);
-
-            try {
-                const dataTable = await worksheet.getSummaryDataAsync();
-                const fieldIndex = dataTable.columns.findIndex(c => c.fieldName === fieldName);
-
-                if (fieldIndex < 0 || dataTable.data.length === 0) {
-                    pillContainer.innerText = "No Data";
-                    pillContainer.className = "kpi-pill bg-gray-100 text-gray-400";
-                    return;
-                }
-
-                // Get first row's value
-                const rawValue = dataTable.data[0][fieldIndex].value;
-                const formattedValue = dataTable.data[0][fieldIndex].formattedValue;
-
-                // Determine dynamic styling based on numerical value
-                const numVal = parseFloat(rawValue);
-                let bgClass = "bg-pill-blue-bg";
-                let textClass = "text-pill-blue-text";
-
-                if (!isNaN(numVal)) {
-                    if (numVal > 0) {
-                        bgClass = "bg-pill-green-bg";
-                        textClass = "text-pill-green-text";
-                    } else if (numVal < 0) {
-                        bgClass = "bg-pill-red-bg";
-                        textClass = "text-pill-red-text";
-                    }
-                }
-
-                pillContainer.innerText = formattedValue;
-                pillContainer.className = `kpi-pill ${bgClass} ${textClass}`;
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                pillContainer.innerText = "Error";
-            }
-        }
-    </script>
 </body>
 </html>
