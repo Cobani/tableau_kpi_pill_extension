@@ -18,6 +18,7 @@
     </context-menu>
     <encoding id="kpi-value">
       <display-name>KPI Value</display-name>
+      <encoding-icon token="text" />
       <data-spec>
         <data-type>numeric</data-type>
       </data-spec>
@@ -26,11 +27,6 @@
       </role-spec>
       <fields max-count="1" />
     </encoding>
-
-        
-    <context-menu>
-      <configure-context-menu-item />
-    </context-menu>
   </worksheet-extension>
   <resources>
     <resource id="name">
