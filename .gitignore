@@ -20,3 +20,7 @@ dist/
 
 # macOS System Files
 .DS_Store
+
+.gitignore
+api_ref/
+GEMINI.md
