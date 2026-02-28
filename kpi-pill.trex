@@ -26,6 +26,11 @@
       </role-spec>
       <fields max-count="1" />
     </encoding>
+
+        
+    <context-menu>
+      <configure-context-menu-item />
+    </context-menu>
   </worksheet-extension>
   <resources>
     <resource id="name">
