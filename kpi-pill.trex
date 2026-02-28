@@ -22,6 +22,9 @@
       <role>measure</role>
       <fields max="1" />
     </encoding>
+    <context-menu>
+      <configure />
+    </context-menu>
   </worksheet-extension>
   <resources>
     <resource id="name">
