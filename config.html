@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Pill Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tableau/extensions-api-master/lib/tableau.extensions.1.latest.js"></script>
+    <style>
+        body { background-color: white !important; padding: 20px; }
+        .color-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px;
+        }
+        .color-option {
+            height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid #e5e7eb;
+        }
+        .color-option.selected { border: 3px solid #2563eb; }
+        .footer { margin-top: 30px; display: flex; gap: 10px; }
+        button { flex: 1; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; border: none; }
+        .save-btn { background-color: #2563eb; color: white; }
+        .cancel-btn { background-color: #e5e7eb; color: #374151; }
+    </style>
+</head>
+<body>
+    <h2 style="margin-top: 0; font-family: sans-serif; border-bottom: 1px solid #eee; padding-bottom: 10px;">Pill Color Theme</h2>
+    <div id="color-picker" class="color-grid"></div>
+
+    <div class="footer">
+        <button class="save-btn" onclick="save()">Save & Close</button>
+        <button class="cancel-btn" onclick="cancel()">Cancel</button>
+    </div>
+
+    <script>
+        let selectedColor = '';
+        let selectedTextColor = '';
+        const colors = [
+            { bg: '#EFF6FF', text: '#1E40AF' }, { bg: '#FEF2F2', text: '#991B1B' }, { bg: '#F0FDF4', text: '#166534' },
+            { bg: '#FFFBEB', text: '#92400E' }, { bg: '#F5F3FF', text: '#5B21B6' }, { bg: '#EEF2FF', text: '#3730A3' },
+            { bg: '#FFF1F2', text: '#9F1239' }, { bg: '#F0FDFA', text: '#115E59' }, { bg: '#ECFEFF', text: '#155E75' },
+            { bg: '#FFF7ED', text: '#9A3412' }, { bg: '#F8FAFC', text: '#1E293B' }, { bg: '#F7FEE7', text: '#3F6212' },
+            { bg: '#ECFDF5', text: '#065F46' }, { bg: '#F0F9FF', text: '#075985' }, { bg: '#FDF2F8', text: '#86198F' },
+            { bg: '#FDF4FF', text: '#701A75' }, { bg: '#F9FAFB', text: '#111827' }, { bg: '#FAF9F6', text: '#44403C' },
+            { bg: '#FEFCE8', text: '#854D0E' }, { bg: '#FAF5FF', text: '#6B21A8' }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            tableau.extensions.initializeDialogAsync().then((payload) => {
+                const settings = tableau.extensions.settings.getAll();
+                selectedColor = settings.bgColor || colors[0].bg;
+                selectedTextColor = settings.textColor || colors[0].text;
+                initColorPicker();
+            });
+        });
+
+        function initColorPicker() {
+            const picker = document.getElementById('color-picker');
+            colors.forEach((c) => {
+                const div = document.createElement('div');
+                div.className = 'color-option';
+                if (c.bg === selectedColor) div.classList.add('selected');
+                div.style.backgroundColor = c.bg;
+                div.onclick = () => {
+                    selectedColor = c.bg;
+                    selectedTextColor = c.text;
+                    document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                };
+                picker.appendChild(div);
+            });
+        }
+
+        function save() {
+            tableau.extensions.settings.set('bgColor', selectedColor);
+            tableau.extensions.settings.set('textColor', selectedTextColor);
+            tableau.extensions.settings.saveAsync().then(() => {
+                tableau.extensions.ui.closeDialog("saved");
+            });
+        }
+
+        function cancel() {
+            tableau.extensions.ui.closeDialog("");
+        }
+    </script>
+</body>
+</html>
